@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { Conversation, Message } = require("../../db/models");
 const onlineUsers = require("../../onlineUsers");
 
-// expects {recipientId, text, conversationId } in body (conversationId will be null if no conversation exists yet)
+// expects {recipientId, text, conversationId, hasRead } in body (conversationId will be null if no conversation exists yet)
 router.post("/", async (req, res, next) => {
   try {
     if (!req.user) {
@@ -43,5 +43,28 @@ router.post("/", async (req, res, next) => {
     next(error);
   }
 });
+
+// expects {conversationId, userId} in body
+router.patch("/:msgId/markRead", async (req, res, next) => {
+  const msgId = req.params.msgId;
+  try {
+    const message = await Message.findByPk(msgId);
+    if (!message) {
+      return res.sendStatus(404);
+    }
+    const { conversationId, userId } = req.body;
+    // Check for valid information before marking as read
+    if (message.conversationId === conversationId && message.senderId !== userId) {
+      message.hasRead = true;
+      await message.save();
+      return res.sendStatus(200);
+    }
+    else {
+      return res.sendStatus(422);
+    }
+  } catch (error) {
+    next(error);
+  }
+}
 
 module.exports = router;
