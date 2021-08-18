@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const { Conversation, Message } = require("../../db/models");
+const { Op } = require("sequelize");
 const onlineUsers = require("../../onlineUsers");
 
 // expects {recipientId, text, conversationId, hasRead } in body (conversationId will be null if no conversation exists yet)
@@ -62,6 +63,23 @@ router.patch("/:msgId/markRead", async (req, res, next) => {
     else {
       return res.sendStatus(422);
     }
+  } catch (error) {
+    next(error);
+  }
+}
+
+// expects {conversationId, userId} in body
+router.patch("/markAllRead", async (req, res, next) => {
+  try {
+    const { conversationId, userId } = req.body;
+    await Message.update({hasRead: true}, {
+      where: {
+        conversationId,
+        [Op.not]: { senderId: userId },
+        [Op.not]: { hasRead: true },
+      },
+    });
+    return res.sendStatus(200);
   } catch (error) {
     next(error);
   }
