@@ -76,7 +76,7 @@ router.patch("/markAllRead", async (req, res, next) => {
       where: {
         conversationId,
         [Op.not]: { senderId: userId },
-        [Op.not]: { hasRead: true },
+        hasRead: false,
       },
     });
     return res.sendStatus(200);
