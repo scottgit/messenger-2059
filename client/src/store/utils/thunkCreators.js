@@ -69,12 +69,17 @@ export const logout = (id) => async (dispatch) => {
 
 // CONVERSATIONS THUNK CREATORS
 
-export const fetchConversations = () => async (dispatch) => {
+export const fetchConversations = (userId) => async (dispatch) => {
   try {
     const { data } = await axios.get("/api/conversations");
 
-  /* Sort messages from oldest to newest before storage in state */
-    data.forEach(convo =>  convo.messages.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt)));
+    data.forEach(convo => {
+      // Sort messages from oldest to newest
+      convo.messages.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt))
+      // Count and store unread messages for the convo
+      convo['unread'] = convo.messages.reduce((sum, message) => +(!message.hasRead && userId !== message.senderId) + sum, 0);
+      console.log(convo, convo.unread)
+    });
 
     dispatch(gotConversations(data));
   } catch (error) {
