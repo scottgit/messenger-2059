@@ -84,11 +84,19 @@ export const addNewConvoToStore = (state, recipientId, message) => {
 export const setAllMessagesAsRead = (state, payload) => {
   const {conversationId, userId} = payload;
   // TODO Remove
-  console.log('in setAllMessagesAsRead');
+  console.log('in setAllMessagesAsRead', state);
   return state.map((convo) => {
+    // TODO Remove
+    console.log('convo', convo.id)
     if (convo.id === conversationId) {
+      // TODO Remove
+      console.log('looking at convo messages')
       const convoCopy = { ...convo };
       convoCopy.messages = convoCopy.messages.map((message) => {
+        // TODO Remove
+        console.log('   msg', message);
+        // TODO Remove
+        console.log('do it', message.senderId !== userId && !message.hasRead)
         if (message.senderId !== userId && !message.hasRead) {
           const messageCopy = {...message};
           messageCopy.hasRead = true;

@@ -5,8 +5,8 @@ import {
   addConversation,
   setNewMessage,
   setSearchedUsers,
+  setMessagesAsRead,
 } from "../conversations";
-import { setMessagesAsRead } from "../activeConversation"
 import { gotUser, setFetchingStatus } from "../user";
 
 axios.interceptors.request.use(async function (config) {
@@ -79,6 +79,7 @@ export const fetchConversations = (userId) => async (dispatch) => {
       convo.messages.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt))
       // Count and store unread messages for the convo
       convo['unread'] = convo.messages.reduce((sum, message) => +(!message.hasRead && userId !== message.senderId) + sum, 0);
+      // TODO Remove
       console.log(convo, convo.unread)
     });
 
