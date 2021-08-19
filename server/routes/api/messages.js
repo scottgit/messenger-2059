@@ -46,7 +46,7 @@ router.post("/", async (req, res, next) => {
 });
 
 // expects {conversationId, userId} in body
-router.patch("/:msgId/markRead", async (req, res, next) => {
+router.patch("/:msgId/mark-read", async (req, res, next) => {
   const msgId = req.params.msgId;
   try {
     const message = await Message.findByPk(msgId);
@@ -69,17 +69,18 @@ router.patch("/:msgId/markRead", async (req, res, next) => {
 }
 
 // expects {conversationId, userId} in body
-router.patch("/markAllRead", async (req, res, next) => {
+router.patch("/mark-all-read", async (req, res, next) => {
   try {
     const { conversationId, userId } = req.body;
-    await Message.update({hasRead: true}, {
+    // udpate returns an array, the first element is number updated
+    const results = await Message.update({hasRead: true}, {
       where: {
         conversationId,
         [Op.not]: { senderId: userId },
         hasRead: false,
       },
     });
-    return res.sendStatus(200);
+    return results[0] ? res.sendStatus(200) : res.sendStatus(422);
   } catch (error) {
     next(error);
   }
