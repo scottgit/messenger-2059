@@ -48,8 +48,12 @@ router.post("/", async (req, res, next) => {
 // expects {conversationId, userId} in body
 router.patch("/:msgId/mark-read", async (req, res, next) => {
   const msgId = req.params.msgId;
+      // TODO Remove
+      console.log('HERE');
   try {
     const message = await Message.findByPk(msgId);
+    // TODO Remove
+    console.log('MESS', message);
     if (!message) {
       return res.sendStatus(404);
     }
@@ -66,7 +70,7 @@ router.patch("/:msgId/mark-read", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+});
 
 // expects {conversationId, userId} in body
 router.patch("/mark-all-read", async (req, res, next) => {
@@ -84,6 +88,6 @@ router.patch("/mark-all-read", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+});
 
 module.exports = router;

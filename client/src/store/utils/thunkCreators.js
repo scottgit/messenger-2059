@@ -5,6 +5,7 @@ import {
   addConversation,
   setNewMessage,
   setSearchedUsers,
+  setAllMessagesAsRead,
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
@@ -99,6 +100,15 @@ const sendMessage = (data, body) => {
     sender: data.sender,
   });
 };
+
+// body expects conversationId and userId of current user
+export const markAllMessagesRead = (body) => async (dispatch) => {
+  const { data } = await axios.patch(`/api/messages/mark-all-read`, body);
+  // TODO Remove
+  console.log(data);
+  // dispatch(setAllMessagesAsRead(body.conversationId, body.userId));
+  return data;
+}
 
 // message format to send: {recipientId, text, conversationId, hasRead}
 // conversationId will be set to null if its a brand new conversation
