@@ -1,21 +1,25 @@
 export const addMessageToStore = (state, payload) => {
-  const { message, sender } = payload;
+  const { message, userId, sender } = payload;
   // if sender isn't null, that means the message needs to be put in a brand new convo
   if (sender !== null) {
     const newConvo = {
       id: message.conversationId,
       otherUser: sender,
       messages: [message],
+      unread: 1,
     };
     newConvo.latestMessageText = message.text;
     return [newConvo, ...state];
   }
-
+  //TODO Remove
+  console.log('adding msg', state, userId)
   return state.map((convo) => {
     if (convo.id === message.conversationId) {
       const convoCopy = { ...convo };
       convoCopy.messages = [...convo.messages, message];
       convoCopy.latestMessageText = message.text;
+      // Only set unread if recipient is setting their state
+      if (userId !== message.senderId) convoCopy.unread += 1;
       return convoCopy;
     } else {
       return convo;
@@ -74,6 +78,7 @@ export const addNewConvoToStore = (state, recipientId, message) => {
       convoCopy.id = message.conversationId;
       convoCopy.messages = [...convo.messages, message];
       convoCopy.latestMessageText = message.text;
+      convoCopy.unread = 0;
       return convoCopy;
     } else {
       return convo;
@@ -83,20 +88,10 @@ export const addNewConvoToStore = (state, recipientId, message) => {
 
 export const setAllMessagesAsRead = (state, payload) => {
   const {conversationId, userId} = payload;
-  // TODO Remove
-  console.log('in setAllMessagesAsRead', state);
   return state.map((convo) => {
-    // TODO Remove
-    console.log('convo', convo.id)
     if (convo.id === conversationId) {
-      // TODO Remove
-      console.log('looking at convo messages')
       const convoCopy = { ...convo };
       convoCopy.messages = convoCopy.messages.map((message) => {
-        // TODO Remove
-        console.log('   msg', message);
-        // TODO Remove
-        console.log('do it', message.senderId !== userId && !message.hasRead)
         if (message.senderId !== userId && !message.hasRead) {
           const messageCopy = {...message};
           messageCopy.hasRead = true;

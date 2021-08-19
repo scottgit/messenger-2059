@@ -79,8 +79,6 @@ export const fetchConversations = (userId) => async (dispatch) => {
       convo.messages.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt))
       // Count and store unread messages for the convo
       convo['unread'] = convo.messages.reduce((sum, message) => +(!message.hasRead && userId !== message.senderId) + sum, 0);
-      // TODO Remove
-      console.log(convo, convo.unread)
     });
 
     dispatch(gotConversations(data));
@@ -95,6 +93,8 @@ const saveMessage = async (body) => {
 };
 
 const sendMessage = (data, body) => {
+  // TODO Remove
+  console.log('in sendMessage emit', data, body)
   socket.emit("new-message", {
     message: data.message,
     recipientId: body.recipientId,
@@ -107,8 +107,6 @@ export const markAllMessagesRead = (body) => async (dispatch) => {
   // TODO Remove
   console.log('inside markAllMessagesRead')
   const { data } = await axios.patch(`/api/messages/mark-all-read`, body);
-  // TODO Remove
-  console.log(data);
   dispatch(setMessagesAsRead(body.conversationId, body.userId));
   return data;
 }
@@ -122,7 +120,7 @@ export const postMessage = (body) => async (dispatch) => {
     if (!body.conversationId) {
       dispatch(addConversation(body.recipientId, data.message));
     } else {
-      dispatch(setNewMessage(data.message));
+      dispatch(setNewMessage(data.message, body.userId));
     }
 
     sendMessage(data, body);

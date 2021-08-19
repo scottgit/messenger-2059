@@ -27,16 +27,13 @@ const ActiveChat = (props) => {
   const conversation = useMemo(() => props.conversation || {}, [props.conversation]);
 
   useEffect(() => {
-    // TODO Remove
-    console.log('in active chat')
     if ("id" in conversation && conversation.unread) {
-      console.log('should be calling mark all read')
       markAllMessagesRead({
         conversationId: conversation.id,
         userId: user.id,
       });
     }
-  }, [conversation, user]);
+  }, [conversation, user, markAllMessagesRead]);
 
   return (
     <Box className={classes.root}>
