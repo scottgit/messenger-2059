@@ -93,8 +93,6 @@ const saveMessage = async (body) => {
 };
 
 const sendMessage = (data, body) => {
-  // TODO Remove
-  console.log('in sendMessage emit', data, body)
   socket.emit("new-message", {
     message: data.message,
     recipientId: body.recipientId,
@@ -104,8 +102,6 @@ const sendMessage = (data, body) => {
 
 // body expects conversationId and userId of current user
 export const markAllMessagesRead = (body) => async (dispatch) => {
-  // TODO Remove
-  console.log('inside markAllMessagesRead')
   const { data } = await axios.patch(`/api/messages/mark-all-read`, body);
   dispatch(setMessagesAsRead(body.conversationId, body.userId));
   return data;
