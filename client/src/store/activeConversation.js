@@ -1,3 +1,5 @@
+import { setAllMessagesAsRead } from "./utils/reducerFunctions";
+
 const SET_ACTIVE_CHAT = "SET_ACTIVE_CHAT";
 const SET_MESSAGES_READ = "SET_MESSAGES_READ";
 
@@ -8,10 +10,10 @@ export const setActiveChat = (username) => {
   };
 };
 
-export const markAllMessagesRead = (conversationId) => {
+export const setMessagesAsRead = (conversationId, userId) => {
   return {
     type: SET_MESSAGES_READ,
-    conversationId
+    payload: { conversationId, userId }
   }
 }
 
@@ -21,7 +23,7 @@ const reducer = (state = "", action) => {
       return action.username;
     }
     case SET_MESSAGES_READ: {
-      return action.conversationId;
+      return setAllMessagesAsRead(state, action.payload);
     }
     default:
       return state;

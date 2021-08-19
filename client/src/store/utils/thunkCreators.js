@@ -5,8 +5,8 @@ import {
   addConversation,
   setNewMessage,
   setSearchedUsers,
-  setAllMessagesAsRead,
 } from "../conversations";
+import { setMessagesAsRead } from "../activeConversation"
 import { gotUser, setFetchingStatus } from "../user";
 
 axios.interceptors.request.use(async function (config) {
@@ -108,7 +108,7 @@ export const markAllMessagesRead = (body) => async (dispatch) => {
   const { data } = await axios.patch(`/api/messages/mark-all-read`, body);
   // TODO Remove
   console.log(data);
-  // dispatch(setAllMessagesAsRead(body.conversationId, body.userId));
+  dispatch(setMessagesAsRead(body.conversationId, body.userId));
   return data;
 }
 
