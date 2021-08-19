@@ -46,33 +46,6 @@ router.post("/", async (req, res, next) => {
 });
 
 // expects {conversationId, userId} in body
-router.patch("/:msgId/mark-read", async (req, res, next) => {
-  const msgId = req.params.msgId;
-      // TODO Remove
-      console.log('HERE');
-  try {
-    const message = await Message.findByPk(msgId);
-    // TODO Remove
-    console.log('MESS', message);
-    if (!message) {
-      return res.sendStatus(404);
-    }
-    const { conversationId, userId } = req.body;
-    // Check for valid information before marking as read
-    if (message.conversationId === conversationId && message.senderId !== userId) {
-      message.hasRead = true;
-      await message.save();
-      return res.sendStatus(200);
-    }
-    else {
-      return res.sendStatus(422);
-    }
-  } catch (error) {
-    next(error);
-  }
-});
-
-// expects {conversationId, userId} in body
 router.patch("/mark-all-read", async (req, res, next) => {
   try {
     const { conversationId, userId } = req.body;

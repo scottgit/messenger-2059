@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@material-ui/core";
 import { Input, Header, Messages } from "./index";
 import { connect } from "react-redux";
+import { markAllMessagesRead } from "../../store/utils/thunkCreators";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -22,8 +23,20 @@ const useStyles = makeStyles(() => ({
 
 const ActiveChat = (props) => {
   const classes = useStyles();
-  const { user } = props;
-  const conversation = props.conversation || {};
+  const { user, markAllMessagesRead } = props;
+  const conversation = useMemo(() => props.conversation || {}, [props.conversation]);
+
+  useEffect(() => {
+    // TODO Remove
+    console.log('in active chat')
+    if ("id" in conversation && conversation.unread) {
+      console.log('should be calling mark all read')
+      markAllMessagesRead({
+        conversationId: conversation.id,
+        userId: user.id,
+      });
+    }
+  }, [conversation, user]);
 
   return (
     <Box className={classes.root}>
@@ -62,4 +75,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(ActiveChat);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    markAllMessagesRead: (data) => {
+      dispatch(markAllMessagesRead(data));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActiveChat);
