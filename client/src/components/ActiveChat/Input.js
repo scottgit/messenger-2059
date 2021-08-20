@@ -34,6 +34,7 @@ const Input = (props) => {
       recipientId: otherUser.id,
       conversationId,
       sender: conversationId ? null : user,
+      senderName: user.username,
       userId: user.id,
       hasRead: false,
     };
@@ -51,6 +52,7 @@ const Input = (props) => {
           value={text}
           name="text"
           onChange={handleChange}
+          autoComplete="off"
         />
       </FormControl>
     </form>

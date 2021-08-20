@@ -5,6 +5,7 @@ import {
   removeOfflineUser,
   addOnlineUser,
 } from "./store/conversations";
+import { markAllMessagesRead } from "./store/utils/thunkCreators";
 
 const socket = io(window.location.origin);
 
@@ -20,7 +21,19 @@ socket.on("connect", () => {
   });
 
   socket.on("new-message", (data) => {
-    store.dispatch(setNewMessage(data.message, data.recipientId, data.sender));
+
+    // Determine active conversation to determine if message enters unread status or not
+    const { user, activeConversation } = store.getState();
+
+    store.dispatch(setNewMessage(data.message, data.recipientId, activeConversation, data.sender));
+
+    // Check if unread status needs immediate removal because of active conversation
+    if (activeConversation === data.senderName) {
+      store.dispatch(markAllMessagesRead({
+        conversationId: data.message.conversationId,
+        userId: user.id,
+      }));
+    }
   });
 });
 

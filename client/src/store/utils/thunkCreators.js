@@ -96,6 +96,7 @@ const sendMessage = (data, body) => {
   socket.emit("new-message", {
     message: data.message,
     recipientId: body.recipientId,
+    senderName: body.senderName,
     sender: data.sender,
   });
 };

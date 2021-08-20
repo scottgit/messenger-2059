@@ -1,5 +1,5 @@
 export const addMessageToStore = (state, payload) => {
-  const { message, userId, sender } = payload;
+  const { message, userId, activeConversation, sender } = payload;
   // if sender isn't null, that means the message needs to be put in a brand new convo
   if (sender !== null) {
     const newConvo = {
@@ -17,8 +17,10 @@ export const addMessageToStore = (state, payload) => {
       const convoCopy = { ...convo };
       convoCopy.messages = [...convo.messages, message];
       convoCopy.latestMessageText = message.text;
-      // Only set unread if recipient is setting their state
-      if (userId !== message.senderId) convoCopy.unread += 1;
+      // Only set unread if recipient, not sender, is setting their state and if they are not in active conversation with that user
+      if (userId !== message.senderId && activeConversation !== convoCopy.otherUser.username) {
+        convoCopy.unread += 1;
+      }
       return convoCopy;
     } else {
       return convo;
