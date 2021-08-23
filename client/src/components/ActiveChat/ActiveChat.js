@@ -27,7 +27,7 @@ const ActiveChat = (props) => {
   const conversation = useMemo(() => props.conversation || {}, [props.conversation]);
 
   useEffect(() => {
-    if ("id" in conversation && conversation.unread) {
+    if (conversation?.id && conversation?.unread) {
       markAllMessagesRead({
         conversationId: conversation.id,
         userId: user.id,
