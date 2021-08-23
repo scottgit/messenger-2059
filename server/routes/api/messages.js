@@ -46,9 +46,15 @@ router.post("/", async (req, res, next) => {
 });
 
 // expects {conversationId, userId} in body
-router.patch("/mark-all-read", async (req, res, next) => {
+router.patch("/read-status", async (req, res, next) => {
   try {
     const { conversationId, userId } = req.body;
+    const convo = await Conversation.findByPk(conversationId);
+
+    if (!req.user || (convo?.user1Id !== userId && convo?.user2Id !== userId)) {
+      return res.sendStatus(401);
+    }
+
     // udpate returns an array, the first element is number updated
     const results = await Message.update({hasRead: true}, {
       where: {
@@ -57,7 +63,7 @@ router.patch("/mark-all-read", async (req, res, next) => {
         hasRead: false,
       },
     });
-    return results[0] ? res.sendStatus(200) : res.sendStatus(422);
+    return results[0] ? res.sendStatus(204) : res.sendStatus(422);
   } catch (error) {
     next(error);
   }

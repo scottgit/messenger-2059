@@ -103,7 +103,7 @@ const sendMessage = (data, body) => {
 
 // body expects conversationId and userId of current user
 export const markAllMessagesRead = (body) => async (dispatch) => {
-  const { data } = await axios.patch(`/api/messages/mark-all-read`, body);
+  const { data } = await axios.patch(`/api/messages/read-status`, body);
   dispatch(setMessagesAsRead(body.conversationId, body.userId));
   return data;
 }
