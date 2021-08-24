@@ -78,7 +78,7 @@ export const fetchConversations = (userId) => async (dispatch) => {
       // Sort messages from oldest to newest
       convo.messages.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt))
       // Count and store unread messages for the convo
-      convo['unread'] = convo.messages.reduce((sum, message) => +(!message.hasRead && userId !== message.senderId) + sum, 0);
+      convo.unread = convo.messages.reduce((sum, message) => +(!message.hasRead && userId !== message.senderId) + sum, 0);
     });
 
     dispatch(gotConversations(data));
@@ -101,10 +101,18 @@ const sendMessage = (data, body) => {
   });
 };
 
+const informMessagesRead = (conversationId, userReadingId) => {
+  socket.emit("read-messages", {
+    conversationId,
+    userReadingId,
+  });
+}
+
 // body expects conversationId and userId of current user
 export const markAllMessagesRead = (body) => async (dispatch) => {
   const { data } = await axios.patch(`/api/messages/read-status`, body);
   dispatch(setMessagesAsRead(body.conversationId, body.userId));
+  informMessagesRead(body.conversationId, body.userId)
   return data;
 }
 

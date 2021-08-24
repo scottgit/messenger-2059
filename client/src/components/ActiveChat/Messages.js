@@ -5,17 +5,23 @@ import moment from "moment";
 
 const Messages = (props) => {
   const { messages, otherUser, userId } = props;
-  const firstUnreadIndex = messages.findIndex((msg) => !msg.hasRead);
-  const lastMessageIndex = messages.length - 1;
+  const lastReadIndex = (() => {
+    let index = -1;
+    for (let i = 0; i < messages.length; i++) {
+      const msg = messages[i];
+      if (msg.senderId === userId && msg.hasRead) {
+        index = i;
+      }
+    }
+    return index;
+  }
+  )();
 
   return (
     <Box>
       {messages.map((message, index) => {
         const time = moment(message.createdAt).format("h:mm");
-        const lastRead =
-          index + 1 === firstUnreadIndex
-          ||
-          (firstUnreadIndex === -1 && index === lastMessageIndex);
+        const lastRead = index  === lastReadIndex
 
         return message.senderId === userId ? (
           <SenderBubble key={message.id} text={message.text} time={time} otherUser={lastRead ? otherUser : null} />
