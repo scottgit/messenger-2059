@@ -1,11 +1,12 @@
 export const addMessageToStore = (state, payload) => {
-  const { message, sender } = payload;
+  const { message, userId, activeConversation, sender } = payload;
   // if sender isn't null, that means the message needs to be put in a brand new convo
   if (sender !== null) {
     const newConvo = {
       id: message.conversationId,
       otherUser: sender,
       messages: [message],
+      unread: 1,
     };
     newConvo.latestMessageText = message.text;
     return [newConvo, ...state];
@@ -16,6 +17,10 @@ export const addMessageToStore = (state, payload) => {
       const convoCopy = { ...convo };
       convoCopy.messages = [...convo.messages, message];
       convoCopy.latestMessageText = message.text;
+      // Only set unread if recipient, not sender, is setting their state and if they are not in active conversation with that user
+      if (userId !== message.senderId && activeConversation !== convoCopy.otherUser.username) {
+        convoCopy.unread += 1;
+      }
       return convoCopy;
     } else {
       return convo;
@@ -74,9 +79,33 @@ export const addNewConvoToStore = (state, recipientId, message) => {
       convoCopy.id = message.conversationId;
       convoCopy.messages = [...convo.messages, message];
       convoCopy.latestMessageText = message.text;
+      convoCopy.unread = 0;
       return convoCopy;
     } else {
       return convo;
     }
   });
 };
+
+export const setAllMessagesAsRead = (state, payload) => {
+  const {conversationId, userId} = payload;
+  return state.map((convo) => {
+    if (convo.id === conversationId) {
+      const convoCopy = { ...convo };
+      convoCopy.messages = convoCopy.messages.map((message) => {
+        if (message.senderId !== userId && !message.hasRead) {
+          const messageCopy = {...message};
+          messageCopy.hasRead = true;
+          return messageCopy;
+        }
+        else {
+          return message;
+        }
+      });
+      convoCopy.unread = 0;
+      return convoCopy;
+    } else {
+      return convo;
+    }
+  });
+}

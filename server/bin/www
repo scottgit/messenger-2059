@@ -32,6 +32,7 @@ const server = http.createServer(app);
 const io = require("socket.io")(server);
 
 io.on("connection", (socket) => {
+
   socket.on("go-online", (id) => {
     if (!onlineUsers.includes(id)) {
       onlineUsers.push(id);
@@ -43,8 +44,17 @@ io.on("connection", (socket) => {
   socket.on("new-message", (data) => {
     socket.broadcast.emit("new-message", {
       message: data.message,
+      recipientId: data.recipientId,
+      senderName: data.senderName,
       sender: data.sender,
     });
+  });
+
+  socket.on("read-messages", (data) => {
+    socket.broadcast.emit("read-messages", {
+      conversationId: data.conversationId,
+      userReadingId: data.userReadingId,
+    })
   });
 
   socket.on("logout", (id) => {

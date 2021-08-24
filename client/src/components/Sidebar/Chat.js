@@ -16,6 +16,19 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       cursor: "grab"
     }
+  },
+  unread: {
+    minWidth: 22,
+    height: 22,
+    boxSizing: "border-box",
+    borderRadius: 11,
+    backgroundColor: "#3A8DFF",
+    padding: 5,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#fff",
+    fontWeight: "bold",
   }
 }));
 
@@ -37,6 +50,11 @@ const Chat = (props) => {
         sidebar={true}
       />
       <ChatContent conversation={conversation} />
+      { conversation.unread > 0 &&
+        <Box className={classes.unread}>
+          {conversation.unread}
+        </Box>
+      }
     </Box>
   );
 };

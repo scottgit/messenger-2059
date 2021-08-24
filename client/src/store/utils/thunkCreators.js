@@ -5,6 +5,7 @@ import {
   addConversation,
   setNewMessage,
   setSearchedUsers,
+  setMessagesAsRead,
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
@@ -69,12 +70,16 @@ export const logout = (id) => async (dispatch) => {
 
 // CONVERSATIONS THUNK CREATORS
 
-export const fetchConversations = () => async (dispatch) => {
+export const fetchConversations = (userId) => async (dispatch) => {
   try {
     const { data } = await axios.get("/api/conversations");
 
-  /* Sort messages from oldest to newest before storage in state */
-    data.forEach(convo =>  convo.messages.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt)));
+    data.forEach(convo => {
+      // Sort messages from oldest to newest
+      convo.messages.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt))
+      // Count and store unread messages for the convo
+      convo.unread = convo.messages.reduce((sum, message) => +(!message.hasRead && userId !== message.senderId) + sum, 0);
+    });
 
     dispatch(gotConversations(data));
   } catch (error) {
@@ -91,11 +96,27 @@ const sendMessage = (data, body) => {
   socket.emit("new-message", {
     message: data.message,
     recipientId: body.recipientId,
+    senderName: body.senderName,
     sender: data.sender,
   });
 };
 
-// message format to send: {recipientId, text, conversationId}
+const informMessagesRead = (conversationId, userReadingId) => {
+  socket.emit("read-messages", {
+    conversationId,
+    userReadingId,
+  });
+}
+
+// body expects conversationId and userId of current user
+export const markAllMessagesRead = (body) => async (dispatch) => {
+  const { data } = await axios.patch(`/api/messages/read-status`, body);
+  dispatch(setMessagesAsRead(body.conversationId, body.userId));
+  informMessagesRead(body.conversationId, body.userId)
+  return data;
+}
+
+// message format to send: {recipientId, text, conversationId, hasRead}
 // conversationId will be set to null if its a brand new conversation
 export const postMessage = (body) => async (dispatch) => {
   try {
@@ -104,7 +125,7 @@ export const postMessage = (body) => async (dispatch) => {
     if (!body.conversationId) {
       dispatch(addConversation(body.recipientId, data.message));
     } else {
-      dispatch(setNewMessage(data.message));
+      dispatch(setNewMessage(data.message, body.userId));
     }
 
     sendMessage(data, body);

@@ -33,7 +33,10 @@ const Input = (props) => {
       text: event.target.text.value,
       recipientId: otherUser.id,
       conversationId,
-      sender: conversationId ? null : user
+      sender: conversationId ? null : user,
+      senderName: user.username,
+      userId: user.id,
+      hasRead: false,
     };
     await postMessage(reqBody);
     setText("");
@@ -49,6 +52,7 @@ const Input = (props) => {
           value={text}
           name="text"
           onChange={handleChange}
+          autoComplete="off"
         />
       </FormControl>
     </form>
