@@ -22,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   introGraphic: {
+    [theme.breakpoints.down("xs")]: {
+      height: "20rem",
+      backgroundPosition: "top",
+    },
     color: "#fff",
     backgroundImage: `url(${BackgroundImg})`,
     backgroundSize: "cover",
@@ -40,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   chatIcon: {
+    [theme.breakpoints.down("xs")]: {
+      marginTop: "initial",
+    },
     display: "block",
     fontSize: "6rem",
     marginBottom: "2rem",
@@ -62,7 +69,6 @@ export const UserAccessForm = (props) => {
   return (
     <Grid
       container
-      direction="row"
       justifyContent="center"
       alignItems="stretch"
       spacing={0}
