@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import SmsOutlinedIcon from '@material-ui/icons/SmsOutlined';
+import SmsOutlinedIcon from "@material-ui/icons/SmsOutlined";
 import {
   Grid,
   Box,
@@ -24,17 +24,35 @@ const useStyles = makeStyles((theme) => ({
   introGraphic: {
     color: "#fff",
     backgroundImage: `url(${BackgroundImg})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    position: "relative",
+    "&::before": {
+      content: "''",
+      display: "block",
+      position: "absolute",
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      background: "linear-gradient(#3A8DFF, #86B9FF)",
+      opacity: 0.85,
+    }
   },
   chatIcon: {
-    display: 'block',
-    fontSize: '6rem',
-    marginBottom: 20,
-    marginTop: -20,
+    display: "block",
+    fontSize: "6rem",
+    marginBottom: "2rem",
+    marginTop: "-8rem",
+    position: "relative",
+    zIndex: 1,
   },
   introText: {
-    fontSize: '2rem',
+    fontSize: "2rem",
+    textAlign: "center",
+    maxWidth: 320,
+    position: "relative",
+    zIndex: 1,
   }
 }));
 
