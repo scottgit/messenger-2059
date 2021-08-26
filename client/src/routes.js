@@ -42,11 +42,11 @@ const Routes = (props) => {
       )}
       <Switch>
         <Route path="/login" component={UserAccessForm} />
-        <Route path="/register" component={Signup} />
+        <Route path="/register" component={UserAccessForm} />
         <Route
           exact
           path="/"
-          render={(props) => (props.user?.id ? <Home /> : <Signup />)}
+          render={(props) => (props.user?.id ? <Home /> : <UserAccessForm />)}
         />
         <Route path="/home" component={Home} />
       </Switch>

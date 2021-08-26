@@ -23,17 +23,9 @@ const Login = (props) => {
     await login({ username, password });
   };
 
-  if (user.id) {
-    return <Redirect to="/home" />;
-  }
-
   return (
     <Grid container justify="center">
       <Box>
-        <Grid container item>
-          <Typography>Need to register?</Typography>
-          <Button onClick={() => history.push("/register")}>Register</Button>
-        </Grid>
         <form onSubmit={handleLogin}>
           <Grid>
             <Grid>

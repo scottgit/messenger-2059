@@ -39,10 +39,6 @@ const Login = (props) => {
   return (
     <Grid container justify="center">
       <Box>
-        <Grid container item>
-          <Typography>Need to log in?</Typography>
-          <Button onClick={() => history.push("/login")}>Login</Button>
-        </Grid>
         <form onSubmit={handleRegister}>
           <Grid>
             <Grid>

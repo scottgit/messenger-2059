@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Redirect, useHistory } from "react-router-dom";
+import { generatePath, Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import SmsOutlinedIcon from "@material-ui/icons/SmsOutlined";
 import {
@@ -64,7 +64,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const UserAccessForm = (props) => {
+  const history = useHistory();
   const classes = useStyles();
+  const path = history?.location?.pathname;
+  const isLogin = path === "/login";
+
+  const { user, login, register } = props;
+
+  if (user.id) {
+    return <Redirect to="/home" />;
+  }
 
   return (
     <Grid
@@ -93,7 +102,16 @@ export const UserAccessForm = (props) => {
         justifyContent="center"
         alignItems="center"
       >
-        <Login />
+        <Grid container item>
+          <Typography>{isLogin ? "Don't have an account?" : "Already have an account?"}</Typography>
+          <Button onClick={() => history.push(`${isLogin ? "/register" : "/login"}`)}>{isLogin ? "Create account" : "Login"}</Button>
+        </Grid>
+
+        {(isLogin && <Login />)
+          ||
+          <Signup/>
+        }
+
       </Grid>
     </Grid>
   )
