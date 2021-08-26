@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
     justifyContent: "center",
     alignItems: "stretch",
+    minWidth: 380,
   },
 
   introGraphic: {
@@ -74,6 +75,26 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center",
+  },
+
+  formWrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    "& > *": {
+      width: "70%",
+    },
+    "& > * *:not(button)": {
+      width: "100%",
+    },
+    "& button": {
+      alignSelf: "center",
+    },
+  },
+
+  formGreeting: {
+    ...theme.typography.h4,
+    whiteSpace: "nowrap",
   },
 }));
 
@@ -133,12 +154,14 @@ export const UserAccessForm = (props) => {
         className={classes.formDisplay}
       >
         <SwitchFormControl {...activeForm.switchForm} />
-        <Grid container item>
-          <Typography>{ greeting }</Typography>
-          {(activeForm.type === 'Login' && <Login />)
-            ||
-            <Signup/>
-          }
+        <Grid container item className={classes.formWrapper}>
+          <Box>
+            <Typography className={classes.formGreeting}>{ greeting }</Typography>
+            {(activeForm.type === 'Login' && <Login />)
+              ||
+              <Signup/>
+            }
+          </Box>
         </Grid>
       </Grid>
     </Grid>

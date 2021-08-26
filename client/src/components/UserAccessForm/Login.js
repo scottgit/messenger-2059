@@ -24,37 +24,33 @@ const Login = (props) => {
   };
 
   return (
-    <Grid container justify="center">
-      <Box>
-        <form onSubmit={handleLogin}>
-          <Grid>
-            <Grid>
-              <FormControl margin="normal" required>
-                <TextField
-                  aria-label="username"
-                  label="Username"
-                  name="username"
-                  type="text"
-                />
-              </FormControl>
-            </Grid>
-            <FormControl margin="normal" required>
-              <TextField
-                label="password"
-                aria-label="password"
-                type="password"
-                name="password"
-              />
-            </FormControl>
-            <Grid>
-              <Button type="submit" size="large">
-                Login
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-      </Box>
-    </Grid>
+    <form onSubmit={handleLogin}>
+      <Grid>
+        <Grid>
+          <FormControl margin="normal" required>
+            <TextField
+              aria-label="username"
+              label="Username"
+              name="username"
+              type="text"
+            />
+          </FormControl>
+        </Grid>
+        <FormControl margin="normal" required>
+          <TextField
+            label="password"
+            aria-label="password"
+            type="password"
+            name="password"
+          />
+        </FormControl>
+        <Grid>
+          <Button type="submit" size="large">
+            Login
+          </Button>
+        </Grid>
+      </Grid>
+    </form>
   );
 };
 
