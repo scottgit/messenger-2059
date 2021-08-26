@@ -8,7 +8,15 @@ import {
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  prompt: {
+    color: "#AAAAAA",
+  },
   invertedButton: {
+    margin: 20,
     backgroundColor: "#FFFFFF",
     boxShadow: "0 0 10px 2px rgba(0,0,0,0.1)",
     color: theme.palette.primary.main,
@@ -26,8 +34,8 @@ export const SwitchFormControl = (props) => {
   const { prompt, path, buttonText } = props;
 
   return (
-    <Grid container item>
-      <Typography>{ prompt }</Typography>
+    <Grid container item className={classes.root}>
+      <Typography className={classes.prompt}>{ prompt }</Typography>
       <Button size="large" className={classes.invertedButton} onClick={() => history.push(path)}>
         { buttonText }
       </Button>
