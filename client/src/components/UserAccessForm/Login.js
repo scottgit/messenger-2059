@@ -47,7 +47,7 @@ const Login = (props) => {
               />
             </FormControl>
             <Grid>
-              <Button type="submit" variant="contained" size="large">
+              <Button type="submit" size="large">
                 Login
               </Button>
             </Grid>
