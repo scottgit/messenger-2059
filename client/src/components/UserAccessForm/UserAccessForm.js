@@ -20,12 +20,18 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       height: "100vh",
     },
+    justifyContent: "center",
+    alignItems: "stretch",
   },
+
   introGraphic: {
     [theme.breakpoints.down("xs")]: {
       height: "20rem",
       backgroundPosition: "top",
     },
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     color: "#fff",
     backgroundImage: `url(${BackgroundImg})`,
     backgroundSize: "cover",
@@ -43,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
       opacity: 0.85,
     }
   },
+
   chatIcon: {
     [theme.breakpoints.down("xs")]: {
       marginTop: "initial",
@@ -54,22 +61,50 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     zIndex: 1,
   },
+
   introText: {
     fontSize: "2rem",
     textAlign: "center",
     maxWidth: 320,
     position: "relative",
     zIndex: 1,
+  },
+
+  formDisplay: {
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
   }
 }));
 
 export const UserAccessForm = (props) => {
   const history = useHistory();
   const classes = useStyles();
-  const path = history?.location?.pathname;
-  const isLogin = path === "/login";
+  const currentPath = history?.location?.pathname;
+  const isLogin = currentPath === "/login";
+
+  const formTypes = {
+    login: {
+      greeting: "Welcome back!",
+      redirectPath: "/register",
+      redirectPrompt: "Don't have an account?",
+      redirectButtonText: "Create account",
+    },
+    signup: {
+      greeting: "Create an account.",
+      redirectPath: "/login",
+      redirectPrompt: "Already have an account?",
+      redirectButtonText: "Login",
+    }
+  }
 
   const { user, login, register } = props;
+  const {
+    greeting,
+    redirectPath,
+    redirectPrompt,
+    redirectButtonText
+  } = isLogin ? formTypes.login : formTypes.signup;
 
   if (user.id) {
     return <Redirect to="/home" />;
@@ -78,18 +113,13 @@ export const UserAccessForm = (props) => {
   return (
     <Grid
       container
-      justifyContent="center"
-      alignItems="stretch"
       spacing={0}
       className={classes.root}
     >
       <Grid
         container
-        direction="column"
         item
         xs={12} sm={5}
-        justifyContent="center"
-        alignItems="center"
         className={classes.introGraphic}
       >
         <SmsOutlinedIcon className={classes.chatIcon} />
@@ -99,19 +129,21 @@ export const UserAccessForm = (props) => {
         container
         item
         xs={12} sm={7}
-        justifyContent="center"
-        alignItems="center"
+        className={classes.formDisplay}
       >
         <Grid container item>
-          <Typography>{isLogin ? "Don't have an account?" : "Already have an account?"}</Typography>
-          <Button onClick={() => history.push(`${isLogin ? "/register" : "/login"}`)}>{isLogin ? "Create account" : "Login"}</Button>
+          <Typography>{ redirectPrompt }</Typography>
+          <Button onClick={() => history.push(redirectPath)}>
+            { redirectButtonText }
+          </Button>
         </Grid>
-
-        {(isLogin && <Login />)
-          ||
-          <Signup/>
-        }
-
+        <Grid container item>
+          <Typography>{ greeting }</Typography>
+          {(isLogin && <Login />)
+            ||
+            <Signup/>
+          }
+        </Grid>
       </Grid>
     </Grid>
   )
