@@ -13,16 +13,16 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   prompt: {
-    color: "#AAAAAA",
+    color: theme.palette.text.secondary,
   },
   invertedButton: {
     margin: 20,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: theme.palette.common.white,
     boxShadow: "0 0 10px 2px rgba(0,0,0,0.1)",
     color: theme.palette.primary.main,
     "&:hover": {
       boxShadow: "0 0 10px 2px rgba(0,0,0,0.3)",
-      backgroundColor: "#FFFFFF",
+      backgroundColor: theme.palette.common.white,
     }
   }
 }));

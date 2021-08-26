@@ -75,12 +75,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-start",
     alignItems: "center",
   },
-
-  invertedButton: {
-    backgroundColor: "#FFFFFF",
-    boxShadow: "0 0 10px 2px rgba(0,0,0,0.1)",
-    color: theme.palette.primary.main,
-  }
 }));
 
 const formTypes = {
