@@ -1,22 +1,19 @@
 import React from "react";
-import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   Grid,
-  Box,
-  Typography,
   Button,
   FormControl,
-  TextField,
 } from "@material-ui/core";
+import { StableLabelTextField } from ".";
 import { login } from "../../store/utils/thunkCreators";
 
 const Login = (props) => {
-  const history = useHistory();
-  const { user, login } = props;
+  const { login } = props;
 
   const handleLogin = async (event) => {
     event.preventDefault();
+
     const username = event.target.username.value;
     const password = event.target.password.value;
 
@@ -28,7 +25,7 @@ const Login = (props) => {
       <Grid>
         <Grid>
           <FormControl margin="normal" required>
-            <TextField
+            <StableLabelTextField
               aria-label="username"
               label="Username"
               name="username"
@@ -37,14 +34,14 @@ const Login = (props) => {
           </FormControl>
         </Grid>
         <FormControl margin="normal" required>
-          <TextField
-            label="password"
+          <StableLabelTextField
+            label="Password"
             aria-label="password"
             type="password"
             name="password"
           />
         </FormControl>
-        <Grid>
+        <Grid container justifyContent="center">
           <Button type="submit" size="large">
             Login
           </Button>

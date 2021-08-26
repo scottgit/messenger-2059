@@ -1,19 +1,14 @@
-import React, { useState } from "react";
-import { generatePath, Redirect, useHistory } from "react-router-dom";
+import React from "react";
+import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import SmsOutlinedIcon from "@material-ui/icons/SmsOutlined";
 import {
   Grid,
   Box,
   Typography,
-  Button,
-  FormControl,
-  TextField,
-  FormHelperText,
   makeStyles,
 } from "@material-ui/core";
-import { Login, Signup, BackgroundImg, SwitchFormControl } from "./index";
-import { register, login } from "../../store/utils/thunkCreators";
+import { Login, Signup, BackgroundImg, SwitchFormControl } from ".";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,15 +76,20 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
-    "& > *": {
-      width: "70%",
-    },
     "& > * *:not(button)": {
       width: "100%",
     },
     "& button": {
       alignSelf: "center",
     },
+  },
+
+  formGroup: {
+    [theme.breakpoints.down("xs")]: {
+      marginTop: "initial",
+    },
+    marginTop: "-8rem",
+    width: "70%",
   },
 
   formGreeting: {
@@ -125,7 +125,7 @@ export const UserAccessForm = (props) => {
   const currentPath = history?.location?.pathname;
   const activeForm = currentPath === "/login" ? formTypes.login : formTypes.signup;
 
-  const { user, login, register } = props;
+  const { user } = props;
   const { greeting } = activeForm;
 
   if (user.id) {
@@ -138,25 +138,29 @@ export const UserAccessForm = (props) => {
       spacing={0}
       className={classes.root}
     >
-      <Grid
-        container
-        item
+      {/*
+      Intro Graphic
+      */}
+      <Grid container item
         xs={12} sm={5}
         className={classes.introGraphic}
       >
         <SmsOutlinedIcon className={classes.chatIcon} />
         <Typography className={classes.introText}>Converse with anyone with any language</Typography>
       </Grid>
-      <Grid
-        container
-        item
+      {/*
+      Form Display Area
+      */}
+      <Grid container item
         xs={12} sm={7}
         className={classes.formDisplay}
       >
         <SwitchFormControl {...activeForm.switchForm} />
         <Grid container item className={classes.formWrapper}>
-          <Box>
-            <Typography className={classes.formGreeting}>{ greeting }</Typography>
+          <Box className={classes.formGroup}>
+            <Typography className={classes.formGreeting}>
+              { greeting }
+            </Typography>
             {(activeForm.type === 'Login' && <Login />)
               ||
               <Signup/>
@@ -174,15 +178,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    login: (credentials) => {
-      dispatch(login(credentials));
-    },
-    register: (credentials) => {
-      dispatch(register(credentials));
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserAccessForm);
+export default connect(mapStateToProps, null)(UserAccessForm);

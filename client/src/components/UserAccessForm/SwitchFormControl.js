@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 export const SwitchFormControl = (props) => {
   const history = useHistory();
   const classes = useStyles();
-  console.log('SFORM', props);
+
   const { prompt, path, buttonText } = props;
 
   return (

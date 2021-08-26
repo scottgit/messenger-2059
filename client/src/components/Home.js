@@ -27,7 +27,7 @@ const Home = (props) => {
 
   useEffect(() => {
     fetchConversations(user.id);
-  }, [fetchConversations]);
+  }, [fetchConversations, user.id]);
 
   if (!user.id) {
     // If we were previously logged in, redirect to login instead of register

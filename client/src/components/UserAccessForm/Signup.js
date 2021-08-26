@@ -1,20 +1,16 @@
 import React, { useState } from "react";
-import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   Grid,
-  Box,
-  Typography,
   Button,
   FormControl,
-  TextField,
   FormHelperText,
 } from "@material-ui/core";
+import { StableLabelTextField } from ".";
 import { register } from "../../store/utils/thunkCreators";
 
 const Login = (props) => {
-  const history = useHistory();
-  const { user, register } = props;
+  const { register } = props;
   const [formErrorMessage, setFormErrorMessage] = useState({});
 
   const handleRegister = async (event) => {
@@ -32,16 +28,12 @@ const Login = (props) => {
     await register({ username, email, password });
   };
 
-  if (user.id) {
-    return <Redirect to="/home" />;
-  }
-
   return (
     <form onSubmit={handleRegister}>
       <Grid>
         <Grid>
           <FormControl>
-            <TextField
+            <StableLabelTextField
               aria-label="username"
               label="Username"
               name="username"
@@ -52,7 +44,7 @@ const Login = (props) => {
         </Grid>
         <Grid>
           <FormControl>
-            <TextField
+            <StableLabelTextField
               label="E-mail address"
               aria-label="e-mail address"
               type="email"
@@ -63,7 +55,7 @@ const Login = (props) => {
         </Grid>
         <Grid>
           <FormControl error={!!formErrorMessage.confirmPassword}>
-            <TextField
+            <StableLabelTextField
               aria-label="password"
               label="Password"
               type="password"
@@ -78,7 +70,7 @@ const Login = (props) => {
         </Grid>
         <Grid>
           <FormControl error={!!formErrorMessage.confirmPassword}>
-            <TextField
+            <StableLabelTextField
               label="Confirm Password"
               aria-label="confirm password"
               type="password"
@@ -91,9 +83,11 @@ const Login = (props) => {
             </FormHelperText>
           </FormControl>
         </Grid>
-        <Button type="submit" size="large">
-          Create
-        </Button>
+        <Grid container justifyContent="center">
+          <Button type="submit" size="large">
+            Create
+          </Button>
+        </Grid>
       </Grid>
     </form>
   );
