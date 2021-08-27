@@ -6,7 +6,7 @@ import {
   FormControl,
   FormHelperText,
 } from "@material-ui/core";
-import { UserAccessForm, StableLabelTextField } from ".";
+import { UserAccessForm, StableLabelTextField } from "./index";
 import { register } from "../../store/utils/thunkCreators";
 
 const Login = (props) => {

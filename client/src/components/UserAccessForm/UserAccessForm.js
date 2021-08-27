@@ -8,7 +8,7 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
-import { BackgroundImg, SwitchFormControl } from ".";
+import { BackgroundImg, SwitchFormControl } from "./index";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: "cover",
     backgroundPosition: "center",
     position: "relative",
+    /* Overlay Gradient for Image */
     "&::before": {
       content: "''",
       display: "block",

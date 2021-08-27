@@ -5,7 +5,7 @@ import {
   Button,
   FormControl,
 } from "@material-ui/core";
-import { UserAccessForm, StableLabelTextField } from ".";
+import { UserAccessForm, StableLabelTextField } from "./index";
 import { login } from "../../store/utils/thunkCreators";
 
 const Login = (props) => {
@@ -13,7 +13,6 @@ const Login = (props) => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-
     const username = event.target.username.value;
     const password = event.target.password.value;
 
