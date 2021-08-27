@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     },
     justifyContent: "center",
     alignItems: "stretch",
-    minWidth: 380,
+    minWidth: 360,
   },
 
   introGraphic: {
@@ -65,6 +65,8 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 320,
     position: "relative",
     zIndex: 1,
+    marginLeft: 10,
+    marginRight: 10,
   },
 
   formDisplay: {
