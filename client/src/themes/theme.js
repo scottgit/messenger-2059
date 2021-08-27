@@ -36,7 +36,7 @@ export const theme = createTheme({
       }
     },
     MuiButton: {
-      root: {
+      contained: {
         fontFamily: "Montserrat, sans-serif",
         color: "#FFFFFF",
         backgroundColor: paletteColors.primary.main,

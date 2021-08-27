@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import {
   Grid,
-  Button,
   FormControl,
   FormHelperText,
 } from "@material-ui/core";
-import { UserAccessForm, StableLabelTextField } from "./index";
+import { UserAccessForm, StableLabelTextField, SubmitButton } from "./index";
 import { register } from "../../store/utils/thunkCreators";
 
 const Login = (props) => {
@@ -92,9 +91,7 @@ const Login = (props) => {
             </FormControl>
           </Grid>
           <Grid container justifyContent="center">
-            <Button type="submit" size="large">
-              Create
-            </Button>
+            <SubmitButton buttonText={"Create"} />
           </Grid>
         </Grid>
       </form>

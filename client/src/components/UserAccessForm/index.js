@@ -4,3 +4,4 @@ export { default as Signup } from "./Signup";
 export { default as BackgroundImg } from "./bg-img.png";
 export { default as SwitchFormControl } from "./SwitchFormControl";
 export { default as StableLabelTextField } from "./StableLabelTextField";
+export { default as SubmitButton } from "./SubmitButton";
