@@ -25,7 +25,7 @@ const Participant = db.define("participant", {
     defaultValue: 0,
   },
   /* blocked -- Any open conversation (by invite or public) can be voluntarily blocked by this user to not give updates on that conversation and for filtering */
-  blocked: {
+  block: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: false,
