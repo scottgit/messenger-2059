@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import SmsOutlinedIcon from "@material-ui/icons/SmsOutlined";
 import {
@@ -8,7 +8,7 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
-import { Login, Signup, BackgroundImg, SwitchFormControl } from ".";
+import { BackgroundImg, SwitchFormControl } from ".";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,20 +76,21 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
-    "& > * *:not(button)": {
-      width: "100%",
-    },
-    "& button": {
-      alignSelf: "center",
-    },
   },
 
   formGroup: {
     [theme.breakpoints.down("xs")]: {
       marginTop: "initial",
     },
-    marginTop: "-8rem",
+    marginTop: "-2rem",
     width: "70%",
+    "& *:not(button)": {
+      width: "100%",
+    },
+    "& button": {
+      alignSelf: "center",
+      margin: 20,
+    },
   },
 
   formGreeting: {
@@ -98,35 +99,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const formTypes = {
-  login: {
-    type: 'Login',
-    greeting: "Welcome back!",
-    switchForm: {
-      path: "/register",
-      prompt: "Don't have an account?",
-      buttonText: "Create account",
-    }
-  },
-  signup: {
-    type: 'Signup',
-    greeting: "Create an account.",
-    switchForm: {
-      path: "/login",
-      prompt: "Already have an account?",
-      buttonText: "Login",
-    },
-  }
-}
-
 export const UserAccessForm = (props) => {
-  const history = useHistory();
   const classes = useStyles();
-  const currentPath = history?.location?.pathname;
-  const activeForm = currentPath === "/login" ? formTypes.login : formTypes.signup;
 
-  const { user } = props;
-  const { greeting } = activeForm;
+  const { greeting, switchFormProps, user, children } = props;
 
   if (user.id) {
     return <Redirect to="/home" />;
@@ -155,15 +131,18 @@ export const UserAccessForm = (props) => {
         xs={12} sm={7}
         className={classes.formDisplay}
       >
-        <SwitchFormControl {...activeForm.switchForm} />
+        <SwitchFormControl {...switchFormProps} />
         <Grid container item className={classes.formWrapper}>
           <Box className={classes.formGroup}>
             <Typography className={classes.formGreeting}>
               { greeting }
             </Typography>
-            {(activeForm.type === 'Login' && <Login />)
-              ||
-              <Signup/>
+            { /* Expects Login or Signup form as a child */
+              children
+              &&
+              React.Children.map(children, (child) => {
+                return React.cloneElement(child);
+              })
             }
           </Box>
         </Grid>

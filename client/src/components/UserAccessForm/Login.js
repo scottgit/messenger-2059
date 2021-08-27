@@ -5,7 +5,7 @@ import {
   Button,
   FormControl,
 } from "@material-ui/core";
-import { StableLabelTextField } from ".";
+import { UserAccessForm, StableLabelTextField } from ".";
 import { login } from "../../store/utils/thunkCreators";
 
 const Login = (props) => {
@@ -21,33 +21,42 @@ const Login = (props) => {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <Grid>
+    <UserAccessForm
+      greeting="Welcome back!"
+      switchFormProps={{
+        path: "/register",
+        prompt: "Don't have an account?",
+        buttonText: "Create account",
+      }}
+    >
+      <form onSubmit={handleLogin}>
         <Grid>
+          <Grid>
+            <FormControl margin="normal" required>
+              <StableLabelTextField
+                aria-label="username"
+                label="Username"
+                name="username"
+                type="text"
+              />
+            </FormControl>
+          </Grid>
           <FormControl margin="normal" required>
             <StableLabelTextField
-              aria-label="username"
-              label="Username"
-              name="username"
-              type="text"
+              label="Password"
+              aria-label="password"
+              type="password"
+              name="password"
             />
           </FormControl>
+          <Grid container justifyContent="center">
+            <Button type="submit" size="large">
+              Login
+            </Button>
+          </Grid>
         </Grid>
-        <FormControl margin="normal" required>
-          <StableLabelTextField
-            label="Password"
-            aria-label="password"
-            type="password"
-            name="password"
-          />
-        </FormControl>
-        <Grid container justifyContent="center">
-          <Button type="submit" size="large">
-            Login
-          </Button>
-        </Grid>
-      </Grid>
-    </form>
+      </form>
+    </UserAccessForm>
   );
 };
 

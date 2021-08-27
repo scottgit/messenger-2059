@@ -6,7 +6,7 @@ import {
   FormControl,
   FormHelperText,
 } from "@material-ui/core";
-import { StableLabelTextField } from ".";
+import { UserAccessForm, StableLabelTextField } from ".";
 import { register } from "../../store/utils/thunkCreators";
 
 const Login = (props) => {
@@ -29,67 +29,76 @@ const Login = (props) => {
   };
 
   return (
-    <form onSubmit={handleRegister}>
-      <Grid>
+    <UserAccessForm
+      greeting="Create an account."
+      switchFormProps={{
+        path: "/login",
+        prompt: "Already have an account?",
+        buttonText: "Login",
+      }}
+    >
+      <form onSubmit={handleRegister}>
         <Grid>
-          <FormControl>
-            <StableLabelTextField
-              aria-label="username"
-              label="Username"
-              name="username"
-              type="text"
-              required
-            />
-          </FormControl>
+          <Grid>
+            <FormControl>
+              <StableLabelTextField
+                aria-label="username"
+                label="Username"
+                name="username"
+                type="text"
+                required
+              />
+            </FormControl>
+          </Grid>
+          <Grid>
+            <FormControl>
+              <StableLabelTextField
+                label="E-mail address"
+                aria-label="e-mail address"
+                type="email"
+                name="email"
+                required
+              />
+            </FormControl>
+          </Grid>
+          <Grid>
+            <FormControl error={!!formErrorMessage.confirmPassword}>
+              <StableLabelTextField
+                aria-label="password"
+                label="Password"
+                type="password"
+                inputProps={{ minLength: 6 }}
+                name="password"
+                required
+              />
+              <FormHelperText>
+                {formErrorMessage.confirmPassword}
+              </FormHelperText>
+            </FormControl>
+          </Grid>
+          <Grid>
+            <FormControl error={!!formErrorMessage.confirmPassword}>
+              <StableLabelTextField
+                label="Confirm Password"
+                aria-label="confirm password"
+                type="password"
+                inputProps={{ minLength: 6 }}
+                name="confirmPassword"
+                required
+              />
+              <FormHelperText>
+                {formErrorMessage.confirmPassword}
+              </FormHelperText>
+            </FormControl>
+          </Grid>
+          <Grid container justifyContent="center">
+            <Button type="submit" size="large">
+              Create
+            </Button>
+          </Grid>
         </Grid>
-        <Grid>
-          <FormControl>
-            <StableLabelTextField
-              label="E-mail address"
-              aria-label="e-mail address"
-              type="email"
-              name="email"
-              required
-            />
-          </FormControl>
-        </Grid>
-        <Grid>
-          <FormControl error={!!formErrorMessage.confirmPassword}>
-            <StableLabelTextField
-              aria-label="password"
-              label="Password"
-              type="password"
-              inputProps={{ minLength: 6 }}
-              name="password"
-              required
-            />
-            <FormHelperText>
-              {formErrorMessage.confirmPassword}
-            </FormHelperText>
-          </FormControl>
-        </Grid>
-        <Grid>
-          <FormControl error={!!formErrorMessage.confirmPassword}>
-            <StableLabelTextField
-              label="Confirm Password"
-              aria-label="confirm password"
-              type="password"
-              inputProps={{ minLength: 6 }}
-              name="confirmPassword"
-              required
-            />
-            <FormHelperText>
-              {formErrorMessage.confirmPassword}
-            </FormHelperText>
-          </FormControl>
-        </Grid>
-        <Grid container justifyContent="center">
-          <Button type="submit" size="large">
-            Create
-          </Button>
-        </Grid>
-      </Grid>
-    </form>
+      </form>
+    </UserAccessForm>
   );
 };
 
