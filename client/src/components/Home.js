@@ -27,7 +27,7 @@ const Home = (props) => {
 
   useEffect(() => {
     fetchConversations(user.id);
-  }, [fetchConversations]);
+  }, [fetchConversations, user.id]);
 
   if (!user.id) {
     // If we were previously logged in, redirect to login instead of register
@@ -42,7 +42,7 @@ const Home = (props) => {
   return (
     <>
       {/* logout button will eventually be in a dropdown next to username */}
-      <Button className={classes.logout} onClick={handleLogout}>
+      <Button variant="text" className={classes.logout} onClick={handleLogout}>
         Logout
       </Button>
       <Grid container component="main" className={classes.root}>
