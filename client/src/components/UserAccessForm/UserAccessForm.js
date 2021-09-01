@@ -1,14 +1,13 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import SmsOutlinedIcon from "@material-ui/icons/SmsOutlined";
 import {
   Grid,
   Box,
   Typography,
   makeStyles,
 } from "@material-ui/core";
-import { BackgroundImg, SwitchFormControl } from "./index";
+import { BackgroundImg, SwitchFormControl, ChatBubble } from "./index";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -124,7 +123,7 @@ export const UserAccessForm = (props) => {
         xs={12} sm={5}
         className={classes.introGraphic}
       >
-        <SmsOutlinedIcon className={classes.chatIcon} />
+          <img src={`${ChatBubble}`} alt="Chat Bubble" className={classes.chatIcon} />
         <Typography className={classes.introText}>Converse with anyone with any language</Typography>
       </Grid>
       {/*
